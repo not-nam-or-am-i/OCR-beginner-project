@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>History</title>
+</head>
+<body>
+    <h1>History of user <i>{{username}}</i> </h1>
+<!--    {{query_result}}-->
+    {% for doc in query_result: %}
+        <h2> {{loop.index0}}. </h2>
+        <p> <b>URL:</b> <i>{{doc['url']}}</i></p>
+        <p> <b>ORC result:</b> <i>{{doc['text']}}</i></p>
+    {% endfor %}
+</body>
+</html>
