@@ -6,9 +6,12 @@ import pytesseract
 import requests
 import urllib.request
 from bson.objectid import ObjectId
+import os
 
 
-client = MongoClient('mongodb://admin:admin%40123@103.137.4.6:27017')
+connection_string = os.environ.get('Mongo_connect')
+
+client = MongoClient(connection_string)
 db = client['ORC']
 col = db['user']
 pytesseract.pytesseract.tesseract_cmd = r'D:/tesseract/tesseract.exe'
