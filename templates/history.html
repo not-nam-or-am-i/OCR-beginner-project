@@ -11,6 +11,7 @@
         <h2> {{loop.index0}}. </h2>
         <p> <b>URL:</b> <i>{{doc['url']}}</i></p>
         <p> <b>ORC result:</b> <i>{{doc['text']}}</i></p>
+        <a href="http://127.0.0.1:5000/download/{{doc['_id']}}">Download image</a>
     {% endfor %}
 </body>
 </html>

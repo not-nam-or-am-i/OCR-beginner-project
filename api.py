@@ -1,9 +1,11 @@
-from flask import Flask, redirect, url_for, render_template, request
+from flask import Flask, redirect, url_for, render_template, request, send_file
 import pymongo
 from pymongo import MongoClient
 from PIL import Image
 import pytesseract
 import requests
+import urllib.request
+from bson.objectid import ObjectId
 
 
 client = MongoClient('mongodb://admin:admin%40123@103.137.4.6:27017')
@@ -43,7 +45,6 @@ def user(usr, password):
     return f'<h1> {usr} </h1> <p> {password} </p>'
 
 
-# TODO: download img
 @app.route('/orc', methods=['POST', 'GET'])
 def orc():
     if request.method == 'POST':
@@ -69,7 +70,6 @@ def orc():
         return render_template('upload_img.html')
 
 
-# TODO: download image
 @app.route('/history/<username>')
 def get_history(username):
     # query
@@ -80,6 +80,20 @@ def get_history(username):
         return render_template('history.html', query_result=query_result, username=username)
     else:
         return f'History for user {username} is empty!'
+
+
+@app.route('/download/<img_id>')
+def download_img(img_id):
+    img_collection = db['image']
+    query = {'_id': ObjectId(img_id)}
+    if img_collection.count_documents(query) != 0:
+        query_result = img_collection.find_one(query)
+        path = './download.png'
+        urllib.request.urlretrieve(query_result['url'], path)
+
+        return send_file(path, as_attachment=True)
+    else:
+        return 'File not found!'
 
 
 if __name__ == '__main__':
